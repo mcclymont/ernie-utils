@@ -1,0 +1,33 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: ernie
+spec:
+  type: LoadBalancer
+  selector:
+    app: ernie
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 9292
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ernie
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: ernie
+    spec:
+      containers:
+      - name: ernie
+        image: mcclymont/ernie-utils:latest
+        ports:
+        - containerPort: 9292
+          protocol: TCP
+
